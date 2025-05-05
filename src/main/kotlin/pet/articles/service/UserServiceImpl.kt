@@ -36,11 +36,7 @@ class UserServiceImpl(
     override fun findAuthorIdsByArticleId(articleId: Int): List<Int> =
         findAuthorsByArticleId(articleId).mapNotNull(User::id)
 
-    //изменить логику (убрать исключение)
     override fun findAuthorsByArticleId(articleId: Int): List<User> {
-        if (!articleRepository.existsById(articleId)) {
-            throw NoSuchElementException("Attempt to find list of users by non existent user id = $articleId")
-        }
         val authorsIds: List<Int> = authorshipOfArticleRepository.findAuthorIdsByArticleId(articleId)
         return findByIds(authorsIds)
     }

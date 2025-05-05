@@ -36,7 +36,8 @@ class ArticleSecurityAspect(
     }
 
     private fun secureEditMethod(authorIds: List<Int>, method: HttpMethod) {
-        if (authorIds.none(userPermissionService::checkUserForEditPermissionById)) {
+        if (!userPermissionService.checkCurrentUserIsAdmin()
+            && authorIds.none(userPermissionService::checkCurrentUserForEditPermissionById)) {
             throw AccessDeniedException("Attempt to $method article without proper permission")
         }
     }

@@ -1,5 +1,7 @@
 package pet.articles.service
 
 interface UserPermissionService {
-    fun checkUserForEditPermissionById(id: Int): Boolean
+    fun checkCurrentUserForEditPermissionById(id: Int): Boolean
+
+    fun checkCurrentUserIsAdmin(): Boolean
 }

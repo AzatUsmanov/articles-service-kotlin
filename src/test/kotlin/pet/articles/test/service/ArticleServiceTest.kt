@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 import pet.articles.model.dto.Article
+import pet.articles.model.dto.Review
 import pet.articles.model.dto.User
 import pet.articles.service.ArticleService
 import pet.articles.service.UserService
@@ -168,9 +169,9 @@ class ArticleServiceTest {
     fun findArticlesByNonExistentAuthorId() {
         val unsavedAuthor: User = userTestDataGenerator.generateUnsavedData()
 
-        assertThrows(NoSuchElementException::class.java) {
-            articleService.findArticlesByAuthorId(unsavedAuthor.id!!)
-        }
+        val articles: List<Article> = articleService.findArticlesByAuthorId(unsavedAuthor.id!!)
+
+        assertTrue(articles.isEmpty())
     }
 
     @Test

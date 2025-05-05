@@ -319,9 +319,8 @@ class ReviewControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .with(user(registeredAdmin))
 
-        assertThrows(ServletException::class.java) {
-            mockMvc.perform(request)
-        }
+        mockMvc.perform(request)
+            .andExpect(status().isOk)
     }
 
     @Test
@@ -352,8 +351,7 @@ class ReviewControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .with(user(registeredAdmin))
 
-        assertThrows(ServletException::class.java) {
-            mockMvc.perform(request)
-        }
+        mockMvc.perform(request)
+            .andExpect(status().isOk)
     }
 }

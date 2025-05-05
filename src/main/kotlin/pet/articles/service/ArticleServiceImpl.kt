@@ -32,11 +32,7 @@ class ArticleServiceImpl(
 
     override fun findById(id: Int): Article? = articleRepository.findById(id)
 
-    //переписать
     override fun findArticlesByAuthorId(authorId: Int): List<Article> {
-        if (!userRepository.existsById(authorId)) {
-            throw NoSuchElementException("Attempt to find list of articles by non existent user id = $authorId")
-        }
         val articleIds: List<Int> = authorshipOfArticleRepository.findArticleIdsByAuthorId(authorId)
         return findByIds(articleIds)
     }

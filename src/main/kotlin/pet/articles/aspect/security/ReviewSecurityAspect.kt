@@ -29,7 +29,7 @@ class ReviewSecurityAspect(
     }
 
     private fun secureEditMethod(userId: Int, method: HttpMethod) {
-        if (!userPermissionService.checkUserForEditPermissionById(userId)) {
+        if (!userPermissionService.checkCurrentUserForEditPermissionById(userId)) {
             throw AccessDeniedException("Attempt to $method user without proper permission")
         }
     }

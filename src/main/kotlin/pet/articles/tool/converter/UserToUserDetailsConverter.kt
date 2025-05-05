@@ -12,8 +12,6 @@ class UserToUserDetailsConverter : Converter<User, UserDetails> {
     override fun convert(source: User): UserDetails = org.springframework.security.core.userdetails.User(
         source.username,
         source.password,
-        listOf(
-            SimpleGrantedAuthority(source.role.toString())
-        )
+        listOf(source.role.toGrantedAuthority())
     )
 }

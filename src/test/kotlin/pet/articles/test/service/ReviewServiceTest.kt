@@ -134,9 +134,9 @@ class ReviewServiceTest {
     fun findReviewsByNonExistentAuthorId() {
         val unsavedAuthor: User = userTestDataGenerator.generateUnsavedData()
 
-        assertThrows(NoSuchElementException::class.java) {
-            reviewService.findByAuthorId(unsavedAuthor.id!!)
-        }
+        val reviews: List<Review> = reviewService.findByAuthorId(unsavedAuthor.id!!)
+
+        assertTrue(reviews.isEmpty())
     }
 
     @Test
@@ -156,8 +156,8 @@ class ReviewServiceTest {
     fun findReviewsByNonExistentArticleId() {
         val unsavedArticle: Article = articleTestDataGenerator.generateUnsavedData()
 
-        assertThrows(NoSuchElementException::class.java) {
-            reviewService.findByArticleId(unsavedArticle.id!!)
-        }
+        val reviews: List<Review> = reviewService.findByArticleId(unsavedArticle.id!!)
+
+        assertTrue(reviews.isEmpty())
     }
 }

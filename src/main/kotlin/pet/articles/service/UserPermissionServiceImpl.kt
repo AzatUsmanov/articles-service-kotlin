@@ -13,8 +13,8 @@ class UserPermissionServiceImpl(
     private val userService: UserService
 ) : UserPermissionService {
 
-    override fun checkUserForEditPermissionById(id: Int): Boolean {
-        val userRoleAuthority = SimpleGrantedAuthority(UserRole.ROLE_USER.toString())
+    override fun checkCurrentUserForEditPermissionById(id: Int): Boolean {
+        val userRoleAuthority: SimpleGrantedAuthority = UserRole.ROLE_USER.toGrantedAuthority()
         val currentUser: UserDetails = getCurrentUser()
 
         if (currentUser.authorities.contains(userRoleAuthority)) {
@@ -23,6 +23,11 @@ class UserPermissionServiceImpl(
         }
         return true
     }
+
+    override fun checkCurrentUserIsAdmin(): Boolean =
+        getCurrentUser().authorities.contains(
+            UserRole.ROLE_ADMIN.toGrantedAuthority()
+        )
 
     private fun getTargetUserById(id: Int): User = userService.findById(id)
         ?: throw NoSuchElementException("User with id $id not found")
