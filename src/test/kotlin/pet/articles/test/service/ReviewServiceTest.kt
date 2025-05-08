@@ -15,16 +15,16 @@ import pet.articles.model.dto.Article
 import pet.articles.model.dto.Review
 import pet.articles.model.dto.User
 import pet.articles.service.ReviewService
-import pet.articles.test.tool.db.DbCleaner
+import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator
 
 import java.sql.SQLException
-import java.util.NoSuchElementException
 
 @SpringBootTest
 class ReviewServiceTest {
+
     @Autowired
-    private lateinit var dbCleaner: DbCleaner
+    private lateinit var dbCleaner: DBCleaner
 
     @Autowired
     private lateinit var reviewService: ReviewService
@@ -40,7 +40,7 @@ class ReviewServiceTest {
 
     @AfterEach
     fun cleanDb() {
-        dbCleaner.cleanAll()
+        dbCleaner.cleanUp()
     }
 
     @Test

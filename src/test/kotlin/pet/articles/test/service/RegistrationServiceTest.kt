@@ -16,15 +16,16 @@ import pet.articles.service.RegistrationService
 import pet.articles.service.UserService
 
 import pet.articles.tool.exception.DuplicateUserException
-import pet.articles.test.tool.db.DbCleaner
+import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator
 
 import java.sql.SQLException
 
 @SpringBootTest
 class RegistrationServiceTest {
+
     @Autowired
-    private lateinit var dbCleaner: DbCleaner
+    private lateinit var dbCleaner: DBCleaner
 
     @Autowired
     private lateinit var registrationService: RegistrationService
@@ -39,8 +40,8 @@ class RegistrationServiceTest {
     private lateinit var userTestDataGenerator: TestDataGenerator<User>
 
     @AfterEach
-    fun cleanDB() {
-        dbCleaner.cleanAll()
+    fun cleanDb() {
+        dbCleaner.cleanUp()
     }
 
     @Test

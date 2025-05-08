@@ -9,10 +9,11 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class DataSourceConfig(
-        @Value("\${spring.datasource.url}") private val dataSourceUrl: String,
-        @Value("\${spring.datasource.username}") private val dataSourceUsername: String,
-        @Value("\${spring.datasource.password}") private val dataSourcePassword: String
+        @Value("\${datasource.url}") private val dataSourceUrl: String,
+        @Value("\${datasource.username}") private val dataSourceUsername: String,
+        @Value("\${datasource.password}") private val dataSourcePassword: String
 ) {
+
     @Bean
     fun dataSource(): HikariDataSource =
         HikariDataSource(

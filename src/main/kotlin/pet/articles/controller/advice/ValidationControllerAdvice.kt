@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import pet.articles.tool.exception.DuplicateUserException
 
 object ValidationError {
+
     const val ERROR = "validationError"
 
     object ResponseContentTypes {
@@ -24,6 +25,7 @@ object ValidationError {
 
 @ControllerAdvice
 class ValidationControllerAdvice {
+
     @ExceptionHandler(DuplicateUserException::class)
     fun handleDuplicateUserException(e: DuplicateUserException): ResponseEntity<Map<String, String>> {
         return ResponseEntity

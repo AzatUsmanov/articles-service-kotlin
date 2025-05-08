@@ -16,7 +16,7 @@ import pet.articles.model.dto.Review
 import pet.articles.model.dto.User
 import pet.articles.service.ArticleService
 import pet.articles.service.UserService
-import pet.articles.test.tool.db.DbCleaner
+import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator
 
 import java.sql.SQLException
@@ -24,8 +24,9 @@ import java.util.NoSuchElementException
 
 @SpringBootTest
 class ArticleServiceTest {
+
     @Autowired
-    private lateinit var dbCleaner: DbCleaner
+    private lateinit var dbCleaner: DBCleaner
 
     @Autowired
     private lateinit var articleService: ArticleService
@@ -40,8 +41,8 @@ class ArticleServiceTest {
     private lateinit var articleTestDataGenerator: TestDataGenerator<Article>
 
     @AfterEach
-    fun cleanDB() {
-        dbCleaner.cleanAll()
+    fun cleanDb() {
+        dbCleaner.cleanUp()
     }
 
     @Test

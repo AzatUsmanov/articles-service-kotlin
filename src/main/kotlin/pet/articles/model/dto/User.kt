@@ -11,6 +11,7 @@ data class User(
     val role : UserRole,
     @JsonIgnore val password: String?
 ) {
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is User) return false

@@ -10,6 +10,7 @@ import java.sql.ResultSet
 
 @Component
 class UserMapper : RowMapper<User> {
+
     override fun mapRow(rs: ResultSet): User = User(
         id = rs.getInt(UserColumn.ID.columnName),
         username = rs.getString(UserColumn.USERNAME.columnName),

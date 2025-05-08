@@ -1,8 +1,8 @@
 package pet.articles.test.controller
 
 import jakarta.servlet.ServletException
-
 import org.junit.jupiter.api.AfterEach
+
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.core.convert.converter.Converter
+import org.springframework.test.context.jdbc.Sql
 
 import pet.articles.model.dto.Article
 import pet.articles.model.dto.User
@@ -35,7 +36,7 @@ import pet.articles.model.dto.payload.UpdateArticlePayload
 import pet.articles.model.enums.UserRole
 import pet.articles.service.ArticleService
 import pet.articles.service.UserService
-import pet.articles.test.tool.db.DbCleaner
+import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator
 import pet.articles.test.tool.producer.AuthenticationDetailsProducer
 import pet.articles.controller.advice.ValidationError.ErrorTypes.INVALID_FIELD
@@ -68,7 +69,7 @@ class ArticleControllerTest {
     lateinit var mockMvc: MockMvc
 
     @Autowired
-    lateinit var dbCleaner: DbCleaner
+    lateinit var dbCleaner: DBCleaner
 
     @Autowired
     lateinit var articleService: ArticleService
@@ -116,8 +117,8 @@ class ArticleControllerTest {
     }
 
     @AfterEach
-    fun cleanDB() {
-        dbCleaner.cleanAll()
+    fun cleanDb() {
+        dbCleaner.cleanUp()
     }
 
     @Test

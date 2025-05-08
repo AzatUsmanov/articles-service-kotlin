@@ -51,7 +51,7 @@ class ArticleController(
             ?: ResponseEntity.notFound().build()
 
     @GetMapping("/authorship/{authorId}")
-    fun findAuthorsOfArticle(@PathVariable authorId: Int): List<Article> =
+    fun findArticlesByAuthorId(@PathVariable authorId: Int): List<Article> =
         articleService.findArticlesByAuthorId(authorId)
 
     @GetMapping

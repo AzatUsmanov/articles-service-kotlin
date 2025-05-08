@@ -3,6 +3,7 @@ package pet.articles.repository
 import pet.articles.model.dto.Review
 
 interface ReviewRepository {
+
     fun save(review: Review): Review
 
     fun deleteById(id: Int)

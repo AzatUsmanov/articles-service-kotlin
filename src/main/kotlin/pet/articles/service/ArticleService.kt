@@ -3,6 +3,7 @@ package pet.articles.service
 import pet.articles.model.dto.Article
 
 interface ArticleService {
+
     fun create(article: Article, authorIds: List<Int>): Article
 
     fun updateById(article: Article, id: Int): Article

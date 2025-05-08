@@ -9,6 +9,7 @@ import java.sql.ResultSet
 
 @Component
 class ArticleMapper : RowMapper<Article> {
+
     override fun mapRow(rs: ResultSet): Article = Article(
         id = rs.getInt(ArticleColumn.ID.columnName),
         topic = rs.getString(ArticleColumn.TOPIC.columnName),

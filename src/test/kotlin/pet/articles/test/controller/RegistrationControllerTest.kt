@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.json.JacksonTester
 import org.springframework.http.MediaType
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
@@ -23,7 +24,7 @@ import pet.articles.controller.advice.ValidationError.ErrorTypes.INVALID_FIELD
 import pet.articles.controller.advice.ValidationError.ResponseContentTypes.LIST_OF_FIELD_ERRORS
 import pet.articles.model.dto.User
 import pet.articles.model.dto.payload.RegistrationPayload
-import pet.articles.test.tool.db.DbCleaner
+import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator
 import pet.articles.test.controller.constant.ControllerTestConstants.Fields.EMAIL
 import pet.articles.test.controller.constant.ControllerTestConstants.Fields.USERNAME
@@ -37,6 +38,7 @@ import pet.articles.test.tool.extension.toRegistrationPayload
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class RegistrationControllerTest {
 
     @Value("\${api.paths.registration}")
@@ -46,7 +48,7 @@ class RegistrationControllerTest {
     lateinit var mockMvc: MockMvc
 
     @Autowired
-    lateinit var dbCleaner: DbCleaner
+    lateinit var dbCleaner: DBCleaner
 
     @Autowired
     lateinit var userJsonTester: JacksonTester<User>
@@ -62,7 +64,7 @@ class RegistrationControllerTest {
 
     @AfterEach
     fun cleanDB() {
-        dbCleaner.cleanAll()
+        dbCleaner.cleanUp()
     }
 
     @Test

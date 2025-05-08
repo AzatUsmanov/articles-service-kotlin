@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.core.convert.converter.Converter
+import org.springframework.test.annotation.DirtiesContext
 
 import pet.articles.controller.advice.ValidationError.ErrorTypes.INVALID_FIELD
 import pet.articles.controller.advice.ValidationError.ResponseContentTypes.LIST_OF_FIELD_ERRORS
@@ -39,7 +40,7 @@ import pet.articles.model.dto.User
 import pet.articles.model.dto.payload.ReviewPayload
 import pet.articles.model.enums.UserRole
 import pet.articles.service.UserService
-import pet.articles.test.tool.db.DbCleaner
+import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator
 import pet.articles.test.tool.producer.AuthenticationDetailsProducer
 import pet.articles.test.tool.extension.extract
@@ -49,6 +50,7 @@ import pet.articles.test.tool.extension.toReviewPayload
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ReviewControllerTest {
 
     @Value("\${api.paths.reviews}")
@@ -67,7 +69,7 @@ class ReviewControllerTest {
     lateinit var mockMvc: MockMvc
 
     @Autowired
-    lateinit var dbCleaner: DbCleaner
+    lateinit var dbCleaner: DBCleaner
 
     @Autowired
     lateinit var userService: UserService
@@ -110,7 +112,7 @@ class ReviewControllerTest {
 
     @AfterEach
     fun cleanDb() {
-        dbCleaner.cleanAll()
+        dbCleaner.cleanUp()
     }
 
     @Test

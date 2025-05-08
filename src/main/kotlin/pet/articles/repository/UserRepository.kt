@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty
 import pet.articles.model.dto.User
 
 interface UserRepository {
+
     fun save(user: User): User
 
     fun updateById(user: User, id: Int): User

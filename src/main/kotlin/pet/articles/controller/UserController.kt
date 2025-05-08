@@ -49,7 +49,7 @@ class UserController(
             ?: ResponseEntity.notFound().build()
 
     @GetMapping("/authorship/{articleId}")
-    fun findAuthorsOfArticle(@PathVariable articleId: Int): List<User> =
+    fun findAuthorsOfArticleId(@PathVariable articleId: Int): List<User> =
         userService.findAuthorsByArticleId(articleId)
 
     @GetMapping

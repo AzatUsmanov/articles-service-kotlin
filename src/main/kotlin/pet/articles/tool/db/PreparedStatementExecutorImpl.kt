@@ -11,6 +11,7 @@ import javax.sql.DataSource
 class PreparedStatementExecutorImpl(
     private val dataSource: DataSource
 ) : PreparedStatementExecutor {
+
     override fun <T> execute(
         sqlQuery: String,
         preparedStatementParam: Int,

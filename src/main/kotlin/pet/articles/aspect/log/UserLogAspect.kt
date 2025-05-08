@@ -12,6 +12,7 @@ import pet.articles.model.dto.User
 @Aspect
 @Component
 class UserLogAspect {
+
     private val log = KotlinLogging.logger {}
 
     @AfterReturning(

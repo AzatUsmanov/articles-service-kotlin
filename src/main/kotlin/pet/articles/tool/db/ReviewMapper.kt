@@ -10,6 +10,7 @@ import java.sql.ResultSet
 
 @Component
 class ReviewMapper : RowMapper<Review> {
+
     override fun mapRow(rs: ResultSet): Review = Review(
         id = rs.getInt(ReviewColumn.ID.columnName),
         content = rs.getString(ReviewColumn.CONTENT.columnName),

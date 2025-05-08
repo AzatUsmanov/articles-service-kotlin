@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.core.convert.converter.Converter
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
@@ -33,7 +34,7 @@ import pet.articles.model.dto.User
 import pet.articles.model.dto.payload.UserPayload
 import pet.articles.model.enums.UserRole
 import pet.articles.service.ArticleService
-import pet.articles.test.tool.db.DbCleaner
+import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator
 import pet.articles.controller.advice.ValidationError.ErrorTypes.DUPLICATE_FIELD
 import pet.articles.controller.advice.ValidationError.ErrorTypes.INVALID_FIELD
@@ -53,6 +54,7 @@ import pet.articles.test.tool.extension.toUserPayload
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserControllerTest {
 
     @Value("\${api.paths.users}")
@@ -68,7 +70,7 @@ class UserControllerTest {
     lateinit var mockMvc: MockMvc
 
     @Autowired
-    lateinit var dbCleaner: DbCleaner
+    lateinit var dbCleaner: DBCleaner
 
     @Autowired
     lateinit var articleService: ArticleService
@@ -108,7 +110,7 @@ class UserControllerTest {
 
     @AfterEach
     fun cleanDb() {
-        dbCleaner.cleanAll()
+        dbCleaner.cleanUp()
     }
 
     @Test
@@ -459,7 +461,7 @@ class UserControllerTest {
 
     @Test
     fun findAllUsers() {
-        dbCleaner.cleanAll()
+        cleanDb()
         val registeredUser: User = authenticationDetailsProducer.produceRegisteredUserWithRawPassword(UserRole.ROLE_USER)
         val userDetails: UserDetails = userToUserDetailsConverter.convert(registeredUser)!!
         val allUsers: List<User> = userTestDataGenerator.generateSavedData(10) + registeredUser

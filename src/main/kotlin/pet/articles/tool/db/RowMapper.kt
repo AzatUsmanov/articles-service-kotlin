@@ -3,6 +3,7 @@ package pet.articles.tool.db
 import java.sql.ResultSet
 
 interface RowMapper<T> {
+
     fun mapRow(rs: ResultSet): T
 
     fun singleOrNull(rs: ResultSet): T? =

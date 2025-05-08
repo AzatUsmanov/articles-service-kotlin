@@ -13,11 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 import pet.articles.model.dto.Article
-import pet.articles.model.dto.Review
 import pet.articles.model.dto.User
 import pet.articles.service.UserService
 import pet.articles.tool.exception.DuplicateUserException
-import pet.articles.test.tool.db.DbCleaner
+import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator
 
 import java.sql.SQLException
@@ -27,8 +26,9 @@ import java.util.NoSuchElementException
 
 @SpringBootTest
 class UserServiceTest {
+
     @Autowired
-    private lateinit var dbCleaner: DbCleaner
+    private lateinit var dbCleaner: DBCleaner
 
     @Autowired
     private lateinit var userService: UserService
@@ -41,7 +41,7 @@ class UserServiceTest {
 
     @AfterEach
     fun cleanDb() {
-        dbCleaner.cleanAll()
+        dbCleaner.cleanUp()
     }
 
     @Test
