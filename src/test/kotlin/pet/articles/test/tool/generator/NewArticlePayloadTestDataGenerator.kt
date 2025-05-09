@@ -13,16 +13,25 @@ class NewArticlePayloadTestDataGenerator(
     private val userTestDataGenerator: TestDataGenerator<User>
 ) : TestDataGenerator<NewArticlePayload> {
 
+    companion object {
+        const val MIN_NUM_OF_TEST_AUTHOR_IDS = 1
+        const val MAX_NUM_OF_TEST_AUTHOR_IDS = 5
+
+        const val ARTICLE_FIELD_TOPIC_INVALID_LENGTH = 1000
+    }
+
     override fun generateSavedData(): NewArticlePayload = TODO()
 
     override fun generateInvalidData(): NewArticlePayload = generateUnsavedData().copy(
-        topic = String.generateRandom(1000)
+        topic = String.generateRandom(ARTICLE_FIELD_TOPIC_INVALID_LENGTH)
     )
 
     override fun generateUnsavedData(): NewArticlePayload =
         convertToNewArticlePayload(
             articleTestDataGenerator.generateUnsavedData(),
-            generateSavedAuthorIds((1..5).random())
+            generateSavedAuthorIds(
+                (MIN_NUM_OF_TEST_AUTHOR_IDS..MAX_NUM_OF_TEST_AUTHOR_IDS).random()
+            )
         )
 
     private fun convertToNewArticlePayload(

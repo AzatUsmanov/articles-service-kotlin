@@ -11,10 +11,14 @@ class ReviewPayloadTestDataGenerator(
     private val reviewTestDataGenerator: TestDataGenerator<Review>
 ) : TestDataGenerator<ReviewPayload> {
 
+    companion object {
+        const val REVIEW_FIELD_TOPIC_INVALID_LENGTH = 1000
+    }
+
     override fun generateSavedData(): ReviewPayload = TODO()
 
     override fun generateInvalidData(): ReviewPayload = generateUnsavedData().copy(
-        content = String.generateRandom(1000)
+        content = String.generateRandom(REVIEW_FIELD_TOPIC_INVALID_LENGTH)
     )
 
     override fun generateUnsavedData(): ReviewPayload =
@@ -24,7 +28,7 @@ class ReviewPayloadTestDataGenerator(
         ReviewPayload(
             type = review.type,
             content = review.content,
-            authorId = review.authorId,
+            authorId = review.authorId!!,
             articleId = review.articleId
         )
 }

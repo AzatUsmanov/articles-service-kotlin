@@ -8,8 +8,6 @@ import pet.articles.repository.ReviewRepository
 @Service
 class ReviewServiceImpl(
     private val reviewRepository: ReviewRepository,
-    private val userService: UserService,
-    private val articleService: ArticleService
 ) : ReviewService {
 
     override fun create(review: Review): Review = reviewRepository.save(review)

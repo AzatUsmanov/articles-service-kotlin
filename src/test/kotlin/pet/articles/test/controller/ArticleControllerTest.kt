@@ -27,7 +27,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.core.convert.converter.Converter
-import org.springframework.test.context.jdbc.Sql
 
 import pet.articles.model.dto.Article
 import pet.articles.model.dto.User
@@ -55,6 +54,10 @@ import pet.articles.test.tool.extension.toUpdateArticlePayload
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
 class ArticleControllerTest {
+
+    companion object {
+        const val NUM_OF_TEST_ARTICLES = 10
+    }
 
     @Value("\${api.paths.articles}")
     lateinit var articlesPath: String
@@ -212,7 +215,8 @@ class ArticleControllerTest {
     @Test
     fun createArticleWithNonExistentAuthors() {
         val unsavedArticle: Article = articleTestDataGenerator.generateUnsavedData()
-        val unsavedAuthorIds: List<Int> = userTestDataGenerator.generateUnsavedData(10).map { it.id!! }
+        val unsavedAuthorIds: List<Int> = userTestDataGenerator.generateUnsavedData(NUM_OF_TEST_ARTICLES)
+            .map { user -> user.id!! }
         val newArticlePayload: NewArticlePayload = unsavedArticle.toNewArticlePayload(unsavedAuthorIds)
         val request: MockHttpServletRequestBuilder = post(articlesPath)
             .contentType(MediaType.APPLICATION_JSON)
@@ -385,7 +389,7 @@ class ArticleControllerTest {
     @Test
     fun findArticlesByAuthorId() {
         val savedAuthor: User = userTestDataGenerator.generateSavedData()
-        val unsavedArticles: List<Article> = articleTestDataGenerator.generateUnsavedData(10)
+        val unsavedArticles: List<Article> = articleTestDataGenerator.generateUnsavedData(NUM_OF_TEST_ARTICLES)
         val savedArticles: List<Article> = unsavedArticles.map {
             articleService.create(it, listOf(savedAuthor.id!!))
         }
@@ -418,7 +422,7 @@ class ArticleControllerTest {
 
     @Test
     fun findAllArticles() {
-        val allArticles: List<Article> = articleTestDataGenerator.generateSavedData(10)
+        val allArticles: List<Article> = articleTestDataGenerator.generateSavedData(NUM_OF_TEST_ARTICLES)
         val request: MockHttpServletRequestBuilder = get(articlesPath)
             .contentType(MediaType.APPLICATION_JSON)
             .with(user(registeredAdmin))

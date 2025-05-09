@@ -9,6 +9,7 @@ import pet.articles.model.dto.Article
 import java.time.LocalDateTime
 
 object ArticleValidation {
+
     object FieldConstraints {
         const val TOPIC_MIN_LENGTH = 1
         const val TOPIC_MAX_LENGTH = 50

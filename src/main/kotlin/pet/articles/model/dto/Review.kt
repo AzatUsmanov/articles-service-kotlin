@@ -9,6 +9,6 @@ data class Review(
     val type : ReviewType,
     val dateOfCreation : LocalDateTime,
     val content : String,
-    val authorId : Int,
+    val authorId : Int?,
     val articleId : Int
 )

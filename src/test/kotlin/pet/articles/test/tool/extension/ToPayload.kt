@@ -36,7 +36,7 @@ fun Article.toUpdateArticlePayload(): UpdateArticlePayload = UpdateArticlePayloa
 fun Review.toReviewPayload(): ReviewPayload = ReviewPayload(
     type = type,
     content = content,
-    authorId = authorId,
+    authorId = authorId!!,
     articleId = articleId
 )
 

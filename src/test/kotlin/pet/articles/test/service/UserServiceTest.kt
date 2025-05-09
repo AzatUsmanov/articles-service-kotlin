@@ -27,6 +27,10 @@ import java.util.NoSuchElementException
 @SpringBootTest
 class UserServiceTest {
 
+    companion object {
+        const val NUM_OF_TEST_USERS = 10
+    }
+
     @Autowired
     private lateinit var dbCleaner: DBCleaner
 
@@ -242,7 +246,7 @@ class UserServiceTest {
 
     @Test
     fun findAllUsers() {
-        val allUsers: List<User> = userTestDataGenerator.generateSavedData(10)
+        val allUsers: List<User> = userTestDataGenerator.generateSavedData(NUM_OF_TEST_USERS)
 
         val usersForCheck: List<User> = userService.findAll()
 

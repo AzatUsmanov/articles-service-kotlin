@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository
 import pet.articles.model.dto.AuthorshipOfArticle
 import pet.articles.model.enums.AuthorshipOfArticleColumn
 import pet.articles.tool.db.PreparedStatementExecutor
+import java.sql.ResultSet
 
 
 @Repository
@@ -45,9 +46,9 @@ class AuthorshipOfArticleRepositoryImpl(
         statementExecutor.execute(
             sqlQuery = FIND_AUTHOR_IDS,
             configure = { setInt(1, articleId) },
-            process = { executeQuery().use { rs ->
+            process = { executeQuery().use { resultSet ->
                 generateSequence {
-                    if (rs.next()) rs.getInt(AuthorshipOfArticleColumn.AUTHOR_ID.columnName) else null
+                    if (resultSet.next()) resultSet.getInt(AuthorshipOfArticleColumn.AUTHOR_ID.columnName) else null
                 }.toList()
             }}
         )
@@ -56,9 +57,9 @@ class AuthorshipOfArticleRepositoryImpl(
         statementExecutor.execute(
             sqlQuery = FIND_ARTICLE_IDS,
             configure = { setInt(1, authorId) },
-            process = { executeQuery().use { rs ->
+            process = { executeQuery().use { resultSet ->
                 generateSequence {
-                    if (rs.next()) rs.getInt(AuthorshipOfArticleColumn.ARTICLE_ID.columnName) else null
+                    if (resultSet.next()) resultSet.getInt(AuthorshipOfArticleColumn.ARTICLE_ID.columnName) else null
                 }.toList()
             }}
         )
@@ -70,6 +71,6 @@ class AuthorshipOfArticleRepositoryImpl(
                 setInt(1, authorshipOfArticle.authorId)
                 setInt(2, authorshipOfArticle.articleId)
             },
-            process = { executeQuery().use { it.next() } }
+            process = { executeQuery().use(ResultSet::next) }
         )
 }

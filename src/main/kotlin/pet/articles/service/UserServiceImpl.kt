@@ -3,7 +3,6 @@ package pet.articles.service
 import org.springframework.stereotype.Service
 
 import pet.articles.model.dto.User
-import pet.articles.repository.ArticleRepository
 import pet.articles.repository.AuthorshipOfArticleRepository
 import pet.articles.repository.UserRepository
 import pet.articles.tool.exception.DuplicateUserException
@@ -11,7 +10,6 @@ import pet.articles.tool.exception.DuplicateUserException
 @Service
 class UserServiceImpl(
     private val userRepository: UserRepository,
-    private val articleRepository: ArticleRepository,
     private val authorshipOfArticleRepository: AuthorshipOfArticleRepository
 ) : UserService {
 
@@ -41,12 +39,8 @@ class UserServiceImpl(
         return findByIds(authorsIds)
     }
 
-    override fun findByIds(userIds: List<Int>): List<User> {
-        if (userIds.isEmpty()) {
-            return emptyList()
-        }
-        return userRepository.findByIds(userIds)
-    }
+    override fun findByIds(userIds: List<Int>): List<User> =
+        if (userIds.isNotEmpty()) userRepository.findByIds(userIds) else emptyList()
 
     override fun findAll(): List<User> = userRepository.findAll()
 
@@ -62,22 +56,24 @@ class UserServiceImpl(
     }
 
     private fun validateUsernameUniqueness(user: User, existingUser: User?) {
-        if (existingUser != null && existingUser.username == user.username) return
-        if (!existsByUsername(user.username)) return
-
-        throw DuplicateUserException(
-            "username",
-            "User with username ${user.username} already exists."
-        )
+        val isValid = !existsByUsername(user.username) ||
+                existingUser?.let { it.username == user.username } ?: false
+        if (!isValid) {
+            throw DuplicateUserException(
+                "username",
+                "User with username ${user.username} already exists."
+            )
+        }
     }
 
     private fun validateUserEmailUniqueness(user: User, existingUser: User?) {
-        if (existingUser != null && existingUser.email == user.email) return
-        if (!existsByEmail(user.email)) return
-
-        throw DuplicateUserException(
-            "email",
-            "User with email ${user.email} already exists."
-        )
+        val isValid = !existsByEmail(user.email) ||
+                existingUser?.let { it.email == user.email } ?: false
+        if (!isValid) {
+            throw DuplicateUserException(
+                "email",
+                "User with email ${user.email} already exists."
+            )
+        }
     }
 }

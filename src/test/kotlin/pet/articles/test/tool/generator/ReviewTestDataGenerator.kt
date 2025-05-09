@@ -22,10 +22,14 @@ class ReviewTestDataGenerator(
     private val articleTestDataGenerator: TestDataGenerator<Article>
 ) : TestDataGenerator<Review> {
 
+    companion object {
+        const val REVIEW_FIELD_TOPIC_INVALID_LENGTH= 1000
+    }
+
     override fun generateSavedData(): Review = reviewService.create(generateUnsavedData())
 
     override fun generateInvalidData(): Review = generateUnsavedData().copy(
-        content = String.generateRandom(1000)
+        content = String.generateRandom(REVIEW_FIELD_TOPIC_INVALID_LENGTH)
     )
 
     override fun generateUnsavedData(): Review =

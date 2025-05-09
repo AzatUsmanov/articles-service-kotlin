@@ -22,22 +22,35 @@ class ArticleTestDataGenerator(
     private val articleService: ArticleService
 ) : TestDataGenerator<Article> {
 
+    companion object {
+        const val MIN_NUM_OF_TEST_AUTHOR_IDS = 1
+        const val MAX_NUM_OF_TEST_AUTHOR_IDS = 5
+
+        const val ARTICLE_FIELD_DATE_OF_CREATION_NAME = "dateOfCreation"
+        const val ARTICLE_FIELD_TOPIC_NAME = "topic"
+        const val ARTICLE_FIELD_CONTENT_NAME = "content"
+
+        const val ARTICLE_FIELD_TOPIC_INVALID_LENGTH= 1000
+    }
+
     override fun generateSavedData(): Article =
         articleService.create(
             generateUnsavedData(),
-            generateSavedAuthorIds((1..5).random())
+            generateSavedAuthorIds(
+                (MIN_NUM_OF_TEST_AUTHOR_IDS..MAX_NUM_OF_TEST_AUTHOR_IDS).random()
+            )
         )
 
     override fun generateUnsavedData(): Article =
         Instancio
             .of(Article::class.java)
-            .set(Select.field("dateOfCreation"), LocalDateTime.now())
-            .generate(Select.field("topic")) { gen ->
+            .set(Select.field(ARTICLE_FIELD_DATE_OF_CREATION_NAME), LocalDateTime.now())
+            .generate(Select.field(ARTICLE_FIELD_TOPIC_NAME)) { gen ->
                 gen.string()
                     .length(TOPIC_MIN_LENGTH, TOPIC_MAX_LENGTH)
                     .alphaNumeric()
             }
-            .generate(Select.field("content")) { gen ->
+            .generate(Select.field(ARTICLE_FIELD_CONTENT_NAME)) { gen ->
                 gen.string()
                     .length(CONTENT_MIN_LENGTH, CONTENT_MAX_LENGTH)
                     .alphaNumeric()
@@ -45,7 +58,7 @@ class ArticleTestDataGenerator(
             .create()
 
     override fun generateInvalidData(): Article = generateUnsavedData().copy(
-        topic = String.generateRandom(1000)
+        topic = String.generateRandom(ARTICLE_FIELD_TOPIC_INVALID_LENGTH)
     )
 
     private fun generateSavedAuthorIds(dataSize: Int): List<Int> =

@@ -25,6 +25,10 @@ import java.util.NoSuchElementException
 @SpringBootTest
 class ArticleServiceTest {
 
+    companion object {
+        const val NUM_OF_TEST_ARTICLES = 10
+    }
+
     @Autowired
     private lateinit var dbCleaner: DBCleaner
 
@@ -48,7 +52,7 @@ class ArticleServiceTest {
     @Test
     fun createArticle() {
         val articleForSave: Article = articleTestDataGenerator.generateUnsavedData()
-        val savedAuthors: List<User> = userTestDataGenerator.generateSavedData(10)
+        val savedAuthors: List<User> = userTestDataGenerator.generateSavedData(NUM_OF_TEST_ARTICLES)
         val authorIds: List<Int> = savedAuthors.map { it.id!! }
 
         val savedArticle: Article = articleService.create(articleForSave, authorIds)
@@ -155,7 +159,7 @@ class ArticleServiceTest {
     @Test
     fun findArticlesByAuthorId() {
         val savedAuthor: User = userTestDataGenerator.generateSavedData()
-        val unsavedArticles: List<Article> = articleTestDataGenerator.generateUnsavedData(10)
+        val unsavedArticles: List<Article> = articleTestDataGenerator.generateUnsavedData(NUM_OF_TEST_ARTICLES)
         val savedArticles: List<Article> = unsavedArticles.map {
             articleService.create(it, listOf(savedAuthor.id!!))
         }
@@ -177,7 +181,7 @@ class ArticleServiceTest {
 
     @Test
     fun findAllArticles() {
-        val allArticles: List<Article> = articleTestDataGenerator.generateSavedData(10)
+        val allArticles: List<Article> = articleTestDataGenerator.generateSavedData(NUM_OF_TEST_ARTICLES)
 
         val articlesForCheck: List<Article> = articleService.findAll()
 

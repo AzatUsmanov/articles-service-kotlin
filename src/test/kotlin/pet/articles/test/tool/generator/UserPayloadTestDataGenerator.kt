@@ -11,10 +11,14 @@ class UserPayloadTestDataGenerator(
     private val userTestDataGenerator: TestDataGenerator<User>
 ) : TestDataGenerator<UserPayload> {
 
+    companion object {
+        const val USER_FIELD_USERNAME_INVALID_LENGTH= 1000
+    }
+
     override fun generateSavedData(): UserPayload = TODO()
 
     override fun generateInvalidData(): UserPayload = generateUnsavedData().copy(
-        username = String.generateRandom(1000)
+        username = String.generateRandom(USER_FIELD_USERNAME_INVALID_LENGTH)
     )
 
     override fun generateUnsavedData(): UserPayload =

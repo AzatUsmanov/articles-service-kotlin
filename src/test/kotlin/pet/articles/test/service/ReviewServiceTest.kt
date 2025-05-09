@@ -14,7 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import pet.articles.model.dto.Article
 import pet.articles.model.dto.Review
 import pet.articles.model.dto.User
+import pet.articles.service.ArticleService
 import pet.articles.service.ReviewService
+import pet.articles.service.UserService
 import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator
 
@@ -23,11 +25,21 @@ import java.sql.SQLException
 @SpringBootTest
 class ReviewServiceTest {
 
+    companion object {
+        const val NUM_OF_TEST_REVIEWS = 10
+    }
+
     @Autowired
     private lateinit var dbCleaner: DBCleaner
 
     @Autowired
     private lateinit var reviewService: ReviewService
+
+    @Autowired
+    private lateinit var articleService: ArticleService
+
+    @Autowired
+    private lateinit var userService: UserService
 
     @Autowired
     private lateinit var userTestDataGenerator: TestDataGenerator<User>
@@ -99,6 +111,29 @@ class ReviewServiceTest {
     }
 
     @Test
+    fun deleteReviewWhenDeletingArticle() {
+        val savedReview: Review = reviewTestDataGenerator.generateSavedData()
+        val article: Article = articleService.findById(savedReview.articleId)!!
+
+        articleService.deleteById(article.id!!)
+
+        val reviewForCheck: Review? = reviewService.findById(savedReview.id!!)
+        assertNull(reviewForCheck)
+    }
+
+    @Test
+    fun deleteReviewWhenDeletingAuthor() {
+        val savedReview: Review = reviewTestDataGenerator.generateSavedData()
+        val author: User = userService.findById(savedReview.authorId!!)!!
+
+        userService.deleteById(author.id!!)
+
+        val reviewForCheck: Review? = reviewService.findById(savedReview.id!!)
+        assertNotNull(reviewForCheck)
+        assertNull(reviewForCheck!!.authorId)
+    }
+
+    @Test
     fun findReviewById() {
         val savedReview: Review = reviewTestDataGenerator.generateSavedData()
 
@@ -119,8 +154,8 @@ class ReviewServiceTest {
 
     @Test
     fun findReviewsByAuthorId() {
-        val reviews: List<Review> = reviewTestDataGenerator.generateSavedData(30)
-        val authorId: Int = reviews.random().authorId
+        val reviews: List<Review> = reviewTestDataGenerator.generateSavedData(NUM_OF_TEST_REVIEWS)
+        val authorId: Int = reviews.random().authorId!!
         val allReviewsByAuthor: List<Review> = reviews.filter { it.authorId == authorId }
 
         val reviewsForCheck: List<Review> = reviewService.findByAuthorId(authorId)
@@ -141,7 +176,7 @@ class ReviewServiceTest {
 
     @Test
     fun findReviewsByArticleId() {
-        val reviews: List<Review> = reviewTestDataGenerator.generateSavedData(30)
+        val reviews: List<Review> = reviewTestDataGenerator.generateSavedData(NUM_OF_TEST_REVIEWS)
         val articleId: Int = reviews.random().articleId
         val allReviewsForArticle: List<Review> = reviews.filter { it.articleId == articleId }
 

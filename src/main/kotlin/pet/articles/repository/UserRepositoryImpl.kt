@@ -74,12 +74,6 @@ class UserRepositoryImpl(
             }
         )
 
-    override fun existsById(id: Int): Boolean = findById(id) != null
-
-    override fun existsByUsername(username: String): Boolean = findByUsername(username) != null
-
-    override fun existsByEmail(email: String): Boolean = findByEmail(email) != null
-
     override fun findById(id: Int): User? =
         statementExecutor.execute(
             sqlQuery = FIND_USER_BY_ID,
@@ -114,4 +108,10 @@ class UserRepositoryImpl(
             process = { executeQuery().use(userMapper::list) }
         )
     }
+
+    override fun existsById(id: Int): Boolean = findById(id) != null
+
+    override fun existsByUsername(username: String): Boolean = findByUsername(username) != null
+
+    override fun existsByEmail(email: String): Boolean = findByEmail(email) != null
 }

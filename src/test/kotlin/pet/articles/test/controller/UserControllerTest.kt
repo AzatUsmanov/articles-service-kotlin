@@ -57,6 +57,10 @@ import pet.articles.test.tool.extension.toUserPayload
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserControllerTest {
 
+    companion object {
+        const val NUM_OF_TEST_REVIEWS = 10
+    }
+
     @Value("\${api.paths.users}")
     lateinit var usersPath: String
 
@@ -428,7 +432,7 @@ class UserControllerTest {
     @Test
     fun findAuthorsByArticleId() {
         val unsavedArticle: Article = articleTestDataGenerator.generateUnsavedData()
-        val authors: List<User> = userTestDataGenerator.generateSavedData(10)
+        val authors: List<User> = userTestDataGenerator.generateSavedData(NUM_OF_TEST_REVIEWS)
         val authorIds: List<Int> = authors.map { it.id!! }
         val savedArticle: Article = articleService.create(unsavedArticle, authorIds)
         val request: MockHttpServletRequestBuilder = get(usersAuthorshipIdPath.format(savedArticle.id))
@@ -464,7 +468,7 @@ class UserControllerTest {
         cleanDb()
         val registeredUser: User = authenticationDetailsProducer.produceRegisteredUserWithRawPassword(UserRole.ROLE_USER)
         val userDetails: UserDetails = userToUserDetailsConverter.convert(registeredUser)!!
-        val allUsers: List<User> = userTestDataGenerator.generateSavedData(10) + registeredUser
+        val allUsers: List<User> = userTestDataGenerator.generateSavedData(NUM_OF_TEST_REVIEWS) + registeredUser
         val request: MockHttpServletRequestBuilder = get(usersPath)
             .contentType(MediaType.APPLICATION_JSON)
             .with(user(userDetails))

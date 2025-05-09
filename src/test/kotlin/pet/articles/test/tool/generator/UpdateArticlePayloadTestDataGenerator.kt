@@ -11,10 +11,14 @@ class UpdateArticlePayloadTestDataGenerator(
     private val articleTestDataGenerator: TestDataGenerator<Article>
 ) : TestDataGenerator<UpdateArticlePayload> {
 
+    companion object {
+        const val ARTICLE_FIELD_TOPIC_INVALID_LENGTH= 1000
+    }
+
     override fun generateSavedData(): UpdateArticlePayload = TODO()
 
     override fun generateInvalidData(): UpdateArticlePayload = generateUnsavedData().copy(
-        topic = String.generateRandom(1000)
+        topic = String.generateRandom(ARTICLE_FIELD_TOPIC_INVALID_LENGTH)
     )
 
     override fun generateUnsavedData(): UpdateArticlePayload =

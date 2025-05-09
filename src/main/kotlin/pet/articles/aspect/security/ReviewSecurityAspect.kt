@@ -28,8 +28,12 @@ class ReviewSecurityAspect(
         }
     }
 
-    private fun secureEditMethod(userId: Int, method: HttpMethod) {
-        if (!userPermissionService.checkCurrentUserForEditPermissionById(userId)) {
+    private fun secureEditMethod(userId: Int?, method: HttpMethod) {
+        val hasPermission: Boolean = userId?.let {
+            userPermissionService.checkCurrentUserForEditPermissionById(it)
+        } ?: userPermissionService.checkCurrentUserIsAdmin()
+
+        if (!hasPermission) {
             throw AccessDeniedException("Attempt to $method user without proper permission")
         }
     }

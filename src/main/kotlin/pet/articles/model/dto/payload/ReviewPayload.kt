@@ -10,6 +10,7 @@ import pet.articles.model.enums.ReviewType
 import java.time.LocalDateTime
 
 object ReviewValidation {
+
     object FieldConstraints {
         const val CONTENT_MIN_LENGTH = 1
         const val CONTENT_MAX_LENGTH = 500

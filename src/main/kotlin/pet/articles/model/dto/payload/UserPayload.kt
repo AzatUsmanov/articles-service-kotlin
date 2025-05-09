@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 import pet.articles.model.dto.User
-
 import pet.articles.model.enums.UserRole
 
 object UserValidation {
+
     object FieldConstrains {
         const val USERNAME_MIN_LENGTH = 5
         const val USERNAME_MAX_LENGTH = 30
@@ -29,8 +29,6 @@ object UserValidation {
         const val ROLE_NOT_NULL = "User role must be not null"
     }
 }
-
-// попробовать заменить jakarta.validation на jetbrains
 
 data class UserPayload(
     @field:NotNull(message = UserValidation.ErrorMessages.USERNAME_NOT_NULL)

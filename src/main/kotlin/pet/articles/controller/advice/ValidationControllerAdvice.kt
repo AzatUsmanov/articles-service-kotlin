@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import pet.articles.tool.exception.DuplicateUserException
 
 object ValidationError {
-
     const val ERROR = "validationError"
 
     object ResponseContentTypes {

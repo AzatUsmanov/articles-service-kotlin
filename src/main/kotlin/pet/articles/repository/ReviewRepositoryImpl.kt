@@ -33,7 +33,7 @@ class ReviewRepositoryImpl(
                 setInt(1, review.type.ordinal)
                 setTimestamp(2, Timestamp.valueOf(review.dateOfCreation))
                 setString(3, review.content)
-                setInt(4, review.authorId)
+                setInt(4, review.authorId!!)
                 setInt(5, review.articleId)
             },
             process = {  

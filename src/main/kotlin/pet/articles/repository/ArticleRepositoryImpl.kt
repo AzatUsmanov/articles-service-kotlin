@@ -43,7 +43,7 @@ class ArticleRepositoryImpl(
                     if (!keys.next()) {
                         throw RuntimeException("Failed to get generated ID")
                     }
-                    val savedArticleId = keys.getInt(1)
+                    val savedArticleId: Int = keys.getInt(1)
                     findById(savedArticleId) ?: throw NoSuchElementException("Article not found after save")
                 }
             }
@@ -73,8 +73,6 @@ class ArticleRepositoryImpl(
             }
         )
 
-    override fun existsById(id: Int): Boolean = findById(id) != null
-
     override fun findById(id: Int): Article? =
         statementExecutor.execute(
             sqlQuery = FIND_ARTICLE_BY_ID,
@@ -95,4 +93,6 @@ class ArticleRepositoryImpl(
             process = { executeQuery().use(articleMapper::list) }
         )
     }
+
+    override fun existsById(id: Int): Boolean = findById(id) != null
 }

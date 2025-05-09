@@ -11,7 +11,6 @@ import pet.articles.repository.UserRepository
 @Service
 class ArticleServiceImpl(
     private val articleRepository: ArticleRepository,
-    private val userRepository: UserRepository,
     private val authorshipOfArticleRepository: AuthorshipOfArticleRepository
 ) : ArticleService {
 
@@ -45,13 +44,12 @@ class ArticleServiceImpl(
     override fun existsById(id: Int): Boolean = articleRepository.existsById(id)
 
     private fun saveAuthorship(savedArticle: Article, authorIds: List<Int>) {
-        val authorshipOfArticles = transformToListOfAuthorshipOfArticle(savedArticle, authorIds)
+        val authorshipOfArticles: List<AuthorshipOfArticle> = transformToListOfAuthorshipOfArticle(savedArticle, authorIds)
         authorshipOfArticleRepository.save(authorshipOfArticles)
     }
 
     private fun transformToListOfAuthorshipOfArticle(
         savedArticle: Article,
         authorIds: List<Int>
-    ): List<AuthorshipOfArticle> =
-        authorIds.map { AuthorshipOfArticle(it, savedArticle.id!!) }
+    ): List<AuthorshipOfArticle> = authorIds.map { AuthorshipOfArticle(it, savedArticle.id!!) }
 }

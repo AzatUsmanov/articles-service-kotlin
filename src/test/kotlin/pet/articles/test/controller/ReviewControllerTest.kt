@@ -53,6 +53,10 @@ import pet.articles.test.tool.extension.toReviewPayload
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ReviewControllerTest {
 
+    companion object {
+        const val NUM_OF_TEST_REVIEWS = 100
+    }
+
     @Value("\${api.paths.reviews}")
     lateinit var reviewsPath: String
 
@@ -235,7 +239,7 @@ class ReviewControllerTest {
     @Test
     fun deleteReviewByIdViaTargetUser() {
         val savedReview: Review = reviewTestDataGenerator.generateSavedData()
-        val authorOfReview: User = userService.findById(savedReview.authorId)!!
+        val authorOfReview: User = userService.findById(savedReview.authorId!!)!!
         val userDetailsOfRegisteredUser: UserDetails = userToUserDetailsConverter.convert(authorOfReview)!!
         val request: MockHttpServletRequestBuilder = delete(reviewsIdPath.format(savedReview.id))
             .contentType(MediaType.APPLICATION_JSON)
@@ -295,8 +299,8 @@ class ReviewControllerTest {
 
     @Test
     fun findReviewsByAuthorId() {
-        val savedReviews: List<Review> = reviewTestDataGenerator.generateSavedData(100)
-        val authorId: Int = savedReviews.first().authorId
+        val savedReviews: List<Review> = reviewTestDataGenerator.generateSavedData(NUM_OF_TEST_REVIEWS)
+        val authorId: Int = savedReviews.random().authorId!!
         val reviewsWrittenByAuthor: List<Review> = savedReviews.filter { it.authorId == authorId }
         val request: MockHttpServletRequestBuilder = get(reviewsUsersIdPath.format(authorId))
             .contentType(MediaType.APPLICATION_JSON)
@@ -327,7 +331,7 @@ class ReviewControllerTest {
 
     @Test
     fun findReviewsByArticleId() {
-        val savedReviews: List<Review> = reviewTestDataGenerator.generateSavedData(100)
+        val savedReviews: List<Review> = reviewTestDataGenerator.generateSavedData(NUM_OF_TEST_REVIEWS)
         val articleId: Int = savedReviews.first().articleId
         val reviewsWrittenForArticle: List<Review> = savedReviews.filter { it.articleId == articleId }
         val request: MockHttpServletRequestBuilder = get(reviewsArticlesIdPath.format(articleId))
