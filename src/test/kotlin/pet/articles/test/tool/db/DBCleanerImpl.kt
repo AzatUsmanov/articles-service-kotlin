@@ -1,8 +1,8 @@
 package pet.articles.test.tool.db
 
 import org.springframework.stereotype.Component
-import java.sql.PreparedStatement
 
+import java.sql.PreparedStatement
 import javax.sql.DataSource
 
 

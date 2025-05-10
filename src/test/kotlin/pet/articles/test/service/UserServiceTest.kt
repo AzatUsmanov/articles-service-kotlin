@@ -23,7 +23,6 @@ import java.sql.SQLException
 
 import java.util.NoSuchElementException
 
-
 @SpringBootTest
 class UserServiceTest {
 

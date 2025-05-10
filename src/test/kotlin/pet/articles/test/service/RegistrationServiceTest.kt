@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import pet.articles.model.dto.User
 import pet.articles.service.RegistrationService
 import pet.articles.service.UserService
-
 import pet.articles.tool.exception.DuplicateUserException
 import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator

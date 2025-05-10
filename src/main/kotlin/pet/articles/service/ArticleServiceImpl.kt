@@ -3,10 +3,8 @@ package pet.articles.service
 import org.springframework.stereotype.Service
 
 import pet.articles.model.dto.Article
-import pet.articles.model.dto.AuthorshipOfArticle
 import pet.articles.repository.ArticleRepository
 import pet.articles.repository.AuthorshipOfArticleRepository
-import pet.articles.repository.UserRepository
 
 @Service
 class ArticleServiceImpl(
@@ -14,11 +12,7 @@ class ArticleServiceImpl(
     private val authorshipOfArticleRepository: AuthorshipOfArticleRepository
 ) : ArticleService {
 
-    override fun create(article: Article, authorIds: List<Int>): Article {
-        val savedArticle: Article = articleRepository.save(article)
-        saveAuthorship(savedArticle, authorIds)
-        return savedArticle
-    }
+    override fun create(article: Article, authorIds: List<Int>): Article = articleRepository.save(article, authorIds)
 
     override fun updateById(article: Article, id: Int): Article {
         if (!existsById(id)) {
@@ -42,14 +36,4 @@ class ArticleServiceImpl(
     override fun findAll(): List<Article> = articleRepository.findAll()
 
     override fun existsById(id: Int): Boolean = articleRepository.existsById(id)
-
-    private fun saveAuthorship(savedArticle: Article, authorIds: List<Int>) {
-        val authorshipOfArticles: List<AuthorshipOfArticle> = transformToListOfAuthorshipOfArticle(savedArticle, authorIds)
-        authorshipOfArticleRepository.save(authorshipOfArticles)
-    }
-
-    private fun transformToListOfAuthorshipOfArticle(
-        savedArticle: Article,
-        authorIds: List<Int>
-    ): List<AuthorshipOfArticle> = authorIds.map { AuthorshipOfArticle(it, savedArticle.id!!) }
 }

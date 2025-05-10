@@ -6,7 +6,7 @@ import pet.articles.model.dto.Article
 
 interface ArticleRepository {
 
-    fun save(article: Article): Article
+    fun save(article: Article, authorIds: List<Int>): Article
 
     fun updateById(article: Article, id: Int): Article
 

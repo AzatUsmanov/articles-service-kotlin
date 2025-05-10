@@ -1,4 +1,4 @@
-package pet.articles.tool.db
+package pet.articles.tool.jdbc.mapper
 
 import java.sql.ResultSet
 

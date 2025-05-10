@@ -21,7 +21,7 @@ class AuthenticationDetailsProducerImpl(
             ?: throw IllegalStateException("Conversion to UserDetails failed")
 
     override fun produceRegisteredUserWithRawPassword(role: UserRole): User {
-        val unsavedUser = userTestDataGenerator.generateUnsavedData().copy(
+        val unsavedUser: User = userTestDataGenerator.generateUnsavedData().copy(
             role = role
         )
         return registrationService.register(unsavedUser).copy(

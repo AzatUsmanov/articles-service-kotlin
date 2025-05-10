@@ -1,6 +1,5 @@
 package pet.articles.service
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
@@ -13,28 +12,20 @@ class UserPermissionServiceImpl(
     private val userService: UserService
 ) : UserPermissionService {
 
-    override fun checkCurrentUserForEditPermissionById(id: Int): Boolean {
-        val userRoleAuthority: SimpleGrantedAuthority = UserRole.ROLE_USER.toGrantedAuthority()
-        val currentUser: UserDetails = getCurrentUser()
-
-        if (currentUser.authorities.contains(userRoleAuthority)) {
-            val targetUser: User = getTargetUserById(id)
-            return isCurrentUserMatchesTarget(currentUser, targetUser)
-        }
-        return true
-    }
+    override fun checkCurrentUserForEditPermissionById(id: Int): Boolean =
+        checkCurrentUserIsAdmin() || isCurrentUserMatchesTarget(id)
 
     override fun checkCurrentUserIsAdmin(): Boolean =
         getCurrentUser().authorities.contains(
             UserRole.ROLE_ADMIN.toGrantedAuthority()
         )
 
-    private fun getTargetUserById(id: Int): User = userService.findById(id)
-        ?: throw NoSuchElementException("User with id $id not found")
-
     private fun getCurrentUser(): UserDetails =
         SecurityContextHolder.getContext().authentication.principal as UserDetails
 
-    private fun isCurrentUserMatchesTarget(currentUser: UserDetails, targetUser: User): Boolean =
-        currentUser.username == targetUser.username
+    private fun getTargetUserById(id: Int): User = userService.findById(id)
+        ?: throw NoSuchElementException("User with id $id not found")
+
+    private fun isCurrentUserMatchesTarget(targetUserId: Int): Boolean =
+        getCurrentUser().username == getTargetUserById(targetUserId).username
 }

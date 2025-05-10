@@ -4,7 +4,9 @@ import org.springframework.stereotype.Repository
 
 import pet.articles.model.dto.AuthorshipOfArticle
 import pet.articles.model.enums.AuthorshipOfArticleColumn
-import pet.articles.tool.db.PreparedStatementExecutor
+import pet.articles.tool.jdbc.preparedstatement.PreparedStatementExecutor
+import pet.articles.tool.jdbc.preparedstatement.PreparedStatementOperation
+
 import java.sql.ResultSet
 
 
@@ -14,10 +16,6 @@ class AuthorshipOfArticleRepositoryImpl(
 ) : AuthorshipOfArticleRepository {
 
     companion object {
-        private const val SAVE_AUTHORSHIP = """
-            INSERT INTO authorship_of_articles(author_id, article_id) 
-            VALUES (?, ?)
-        """
         private const val FIND_AUTHOR_IDS = "SELECT author_id FROM authorship_of_articles WHERE article_id = ?"
         private const val FIND_ARTICLE_IDS = "SELECT article_id FROM authorship_of_articles WHERE author_id = ?"
         private const val FIND_AUTHORSHIP = """
@@ -26,51 +24,43 @@ class AuthorshipOfArticleRepositoryImpl(
         """
     }
 
-    override fun save(authorshipOfArticles: List<AuthorshipOfArticle>): List<AuthorshipOfArticle> =
-        statementExecutor.executeTransaction(
-            sqlQuery = SAVE_AUTHORSHIP,
-            configure = {
-                for ((authorId, articleId) in authorshipOfArticles) {
-                    setInt(1, authorId)
-                    setInt(2, articleId)
-                    addBatch()
-                }
-            },
-            process = {
-                executeBatch()
-                authorshipOfArticles
-            }
-        )
-
     override fun findAuthorIdsByArticleId(articleId: Int): List<Int> =
-        statementExecutor.execute(
+        statementExecutor.execute(PreparedStatementOperation(
             sqlQuery = FIND_AUTHOR_IDS,
-            configure = { setInt(1, articleId) },
-            process = { executeQuery().use { resultSet ->
-                generateSequence {
-                    if (resultSet.next()) resultSet.getInt(AuthorshipOfArticleColumn.AUTHOR_ID.columnName) else null
-                }.toList()
-            }}
-        )
+            process = {
+                setInt(1, articleId)
+                executeQuery().use { resultSet ->
+                    extractIdsFromResultSetByColumn(resultSet, AuthorshipOfArticleColumn.AUTHOR_ID)
+                }
+            }
+        ))
 
     override fun findArticleIdsByAuthorId(authorId: Int): List<Int> =
-        statementExecutor.execute(
+        statementExecutor.execute(PreparedStatementOperation(
             sqlQuery = FIND_ARTICLE_IDS,
-            configure = { setInt(1, authorId) },
-            process = { executeQuery().use { resultSet ->
-                generateSequence {
-                    if (resultSet.next()) resultSet.getInt(AuthorshipOfArticleColumn.ARTICLE_ID.columnName) else null
-                }.toList()
-            }}
-        )
+            process = {
+                setInt(1, authorId)
+                executeQuery().use { resultSet ->
+                    extractIdsFromResultSetByColumn(resultSet, AuthorshipOfArticleColumn.ARTICLE_ID)
+                }
+            }
+        ))
 
     override fun exists(authorshipOfArticle: AuthorshipOfArticle): Boolean =
-        statementExecutor.execute(
+        statementExecutor.execute(PreparedStatementOperation(
             sqlQuery = FIND_AUTHORSHIP,
-            configure = {
+            process = {
                 setInt(1, authorshipOfArticle.authorId)
                 setInt(2, authorshipOfArticle.articleId)
-            },
-            process = { executeQuery().use(ResultSet::next) }
-        )
+                executeQuery().use(ResultSet::next)
+            }
+        ))
+
+    private fun extractIdsFromResultSetByColumn(
+        resultSet: ResultSet,
+        column: AuthorshipOfArticleColumn
+    ): List<Int> = generateSequence {
+        if (resultSet.next()) resultSet.getInt(column.columnName) else null
+    }.toList()
+
 }

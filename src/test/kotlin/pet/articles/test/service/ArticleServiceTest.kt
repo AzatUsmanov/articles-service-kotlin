@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 import pet.articles.model.dto.Article
-import pet.articles.model.dto.Review
 import pet.articles.model.dto.User
 import pet.articles.service.ArticleService
 import pet.articles.service.UserService
