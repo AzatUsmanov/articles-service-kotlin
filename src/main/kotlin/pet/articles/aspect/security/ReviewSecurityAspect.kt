@@ -36,7 +36,7 @@ class ReviewSecurityAspect(
         } ?: userPermissionService.checkCurrentUserIsAdmin()
 
         if (!hasPermission) {
-            throw AccessDeniedException("Attempt to $method user without proper permission")
+            throw AccessDeniedException("Attempt to $method review without proper permission")
         }
     }
 }

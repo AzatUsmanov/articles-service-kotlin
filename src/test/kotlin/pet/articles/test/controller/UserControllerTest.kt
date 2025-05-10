@@ -226,27 +226,6 @@ class UserControllerTest {
     }
 
     @Test
-    fun updateUserByIdViaTargetUser() {
-        val savedUser: User = authenticationDetailsProducer.produceRegisteredUserWithRawPassword(UserRole.ROLE_USER)
-        val targetUserDetails: UserDetails = userToUserDetailsConverter.convert(savedUser)!!
-        val userPayload: UserPayload = userPayloadTestDataGenerator.generateUnsavedData()
-        val request: MockHttpServletRequestBuilder = patch(usersIdPath.format(savedUser.id))
-            .contentType(MediaType.APPLICATION_JSON)
-            .with(user(targetUserDetails))
-            .content(userPayloadJsonTester.write(userPayload).json)
-
-        mockMvc.perform(request)
-            .andExpectAll(
-                status().isOk,
-                jsonPath(ID).value(savedUser.id)
-            )
-            .andDo { result: MvcResult ->
-                val user: User = result.extract(userJsonTester)
-                assertTrue(user.isMatches(userPayload))
-            }
-    }
-
-    @Test
     fun updateUserByIdWithoutAccess() {
         val savedUser: User = userTestDataGenerator.generateSavedData()
         val userPayload: UserPayload = userPayloadTestDataGenerator.generateUnsavedData()

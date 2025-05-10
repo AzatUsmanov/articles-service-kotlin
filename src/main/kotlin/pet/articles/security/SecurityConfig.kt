@@ -35,6 +35,7 @@ class SecurityConfig(
             it
                 .requestMatchers(registrationPath, SWAGGER_UI_PATH, SWAGGER_RESOURCES_PATH, API_DOCS).permitAll()
                 .requestMatchers(HttpMethod.POST, usersPath).hasRole(UserRole.ROLE_ADMIN.roleName)
+                .requestMatchers(HttpMethod.PATCH, "$usersPath/**").hasRole(UserRole.ROLE_ADMIN.roleName)
                 .requestMatchers(usersPath, articlesPath, reviewsPath).hasAnyRole(
                     UserRole.ROLE_USER.roleName, UserRole.ROLE_ADMIN.roleName
                 )

@@ -16,19 +16,10 @@ class UserSecurityAspect(
     private val userPermissionService: UserPermissionService
 ) {
 
-    @Before("execution(* pet.articles.controller.UserController.updateById(..)) && args(userPayload, id)")
-    fun secureUserUpdate(userPayload: UserPayload, id: Int) {
-        secureEditMethod(id, HttpMethod.PATCH)
-    }
-
     @Before("execution(* pet.articles.controller.UserController.deleteById(..)) && args(id)")
     fun secureUserDeletion(id: Int) {
-        secureEditMethod(id, HttpMethod.DELETE)
-    }
-
-    private fun secureEditMethod(userId: Int, method: HttpMethod) {
-        if (!userPermissionService.checkCurrentUserForEditPermissionById(userId)) {
-            throw AccessDeniedException("Attempt to $method user without proper permission")
+        if (!userPermissionService.checkCurrentUserForEditPermissionById(id)) {
+            throw AccessDeniedException("Attempt to delete user without proper permission")
         }
     }
 }
