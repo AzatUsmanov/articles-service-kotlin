@@ -15,7 +15,7 @@ object UserValidation {
         const val EMAIL_MIN_LENGTH = 5
         const val EMAIL_MAX_LENGTH = 50
         const val PASSWORD_MIN_LENGTH = 5
-        const val PASSWORD_MAX_LENGTH = 100
+        const val PASSWORD_MAX_LENGTH = 50
     }
 
     object ErrorMessages {
