@@ -20,8 +20,6 @@ import pet.articles.service.UserService
 import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator
 
-import java.sql.SQLException
-
 @SpringBootTest
 class ReviewServiceTest {
 

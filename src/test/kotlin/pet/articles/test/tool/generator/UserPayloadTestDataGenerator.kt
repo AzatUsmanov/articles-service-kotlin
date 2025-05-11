@@ -4,25 +4,20 @@ import org.springframework.stereotype.Component
 
 import pet.articles.model.dto.User
 import pet.articles.model.dto.payload.UserPayload
-import pet.articles.test.tool.extension.generateRandom
 
 @Component
 class UserPayloadTestDataGenerator(
     private val userTestDataGenerator: TestDataGenerator<User>
 ) : TestDataGenerator<UserPayload> {
 
-    companion object {
-        const val USER_FIELD_USERNAME_INVALID_LENGTH= 1000
-    }
+    override fun generateUnsavedData(dataSize: Int): List<UserPayload> =
+        userTestDataGenerator.generateUnsavedData(dataSize).map(::convertToUserPayload)
 
-    override fun generateSavedData(): UserPayload = TODO()
+    override fun generateSavedData(dataSize: Int): List<UserPayload> =
+        userTestDataGenerator.generateSavedData(dataSize).map(::convertToUserPayload)
 
-    override fun generateInvalidData(): UserPayload = generateUnsavedData().copy(
-        username = String.generateRandom(USER_FIELD_USERNAME_INVALID_LENGTH)
-    )
-
-    override fun generateUnsavedData(): UserPayload =
-        convertToUserPayload(userTestDataGenerator.generateUnsavedData())
+    override fun generateInvalidData(): UserPayload =
+        convertToUserPayload(userTestDataGenerator.generateInvalidData())
 
     private fun convertToUserPayload(user: User): UserPayload =
         UserPayload(

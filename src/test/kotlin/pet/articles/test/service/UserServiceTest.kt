@@ -19,8 +19,6 @@ import pet.articles.tool.exception.DuplicateUserException
 import pet.articles.test.tool.db.DBCleaner
 import pet.articles.test.tool.generator.TestDataGenerator
 
-import java.sql.SQLException
-
 import java.util.NoSuchElementException
 
 @SpringBootTest

@@ -4,25 +4,20 @@ import org.springframework.stereotype.Component
 
 import pet.articles.model.dto.Article
 import pet.articles.model.dto.payload.UpdateArticlePayload
-import pet.articles.test.tool.extension.generateRandom
 
 @Component
 class UpdateArticlePayloadTestDataGenerator(
     private val articleTestDataGenerator: TestDataGenerator<Article>
 ) : TestDataGenerator<UpdateArticlePayload> {
 
-    companion object {
-        const val ARTICLE_FIELD_TOPIC_INVALID_LENGTH= 1000
-    }
+    override fun generateSavedData(dataSize: Int): List<UpdateArticlePayload> =
+        articleTestDataGenerator.generateSavedData(dataSize).map(::convertToUpdateArticlePayload)
 
-    override fun generateSavedData(): UpdateArticlePayload = TODO()
+    override fun generateUnsavedData(dataSize: Int): List<UpdateArticlePayload> =
+        articleTestDataGenerator.generateUnsavedData(dataSize).map(::convertToUpdateArticlePayload)
 
-    override fun generateInvalidData(): UpdateArticlePayload = generateUnsavedData().copy(
-        topic = String.generateRandom(ARTICLE_FIELD_TOPIC_INVALID_LENGTH)
-    )
-
-    override fun generateUnsavedData(): UpdateArticlePayload =
-        convertToUpdateArticlePayload(articleTestDataGenerator.generateUnsavedData())
+    override fun generateInvalidData(): UpdateArticlePayload =
+        convertToUpdateArticlePayload(articleTestDataGenerator.generateInvalidData())
 
     private fun convertToUpdateArticlePayload(article: Article): UpdateArticlePayload =
         UpdateArticlePayload(
