@@ -64,7 +64,7 @@ class RegistrationServiceTest {
     fun registerWithInvalidData() {
         val invalidUser: User = userTestDataGenerator.generateInvalidData()
 
-        assertThrows(SQLException::class.java) {
+        assertThrows(RuntimeException::class.java) {
             registrationService.register(invalidUser)
         }
     }

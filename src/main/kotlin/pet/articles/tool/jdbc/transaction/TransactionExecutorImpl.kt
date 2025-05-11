@@ -20,7 +20,7 @@ class TransactionExecutorImpl(
                     return result
                 } catch (e: Exception) {
                     rollback()
-                    throw e
+                    throw RuntimeException(e)
                 } finally {
                     autoCommit = true
                 }

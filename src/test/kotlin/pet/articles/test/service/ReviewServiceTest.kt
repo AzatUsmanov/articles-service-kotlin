@@ -73,7 +73,7 @@ class ReviewServiceTest {
             articleId = unsavedArticle.id!!
         )
         
-        assertThrows(SQLException::class.java) {
+        assertThrows(RuntimeException::class.java) {
             reviewService.create(reviewForSave)
         }
     }
@@ -85,7 +85,7 @@ class ReviewServiceTest {
             authorId = unsavedAuthor.id!!
         )
 
-        assertThrows(SQLException::class.java) {
+        assertThrows(RuntimeException::class.java) {
             reviewService.create(reviewForSave)
         }
     }

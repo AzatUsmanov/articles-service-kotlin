@@ -80,7 +80,7 @@ class ArticleServiceTest {
     fun saveArticleWithInvalidData() {
         val invalidArticle: Article = articleTestDataGenerator.generateInvalidData()
 
-        assertThrows(SQLException::class.java) {
+        assertThrows(RuntimeException::class.java) {
             articleService.create(invalidArticle, emptyList())
         }
     }
@@ -102,7 +102,7 @@ class ArticleServiceTest {
         val savedArticle: Article = articleTestDataGenerator.generateSavedData()
         val invalidArticle: Article = articleTestDataGenerator.generateInvalidData()
 
-        assertThrows(SQLException::class.java) {
+        assertThrows(RuntimeException::class.java) {
             articleService.updateById(invalidArticle, savedArticle.id!!)
         }
     }

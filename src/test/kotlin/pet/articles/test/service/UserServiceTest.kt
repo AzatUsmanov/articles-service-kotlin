@@ -62,7 +62,7 @@ class UserServiceTest {
     fun saveUserWithInvalidData() {
         val invalidUser: User = userTestDataGenerator.generateInvalidData()
         
-        assertThrows(SQLException::class.java) {
+        assertThrows(RuntimeException::class.java) {
             userService.create(invalidUser)
         }
     }
@@ -108,7 +108,7 @@ class UserServiceTest {
         val invalidUser: User = userTestDataGenerator.generateInvalidData()
         val savedUser: User = userTestDataGenerator.generateSavedData()
 
-        assertThrows(SQLException::class.java) {
+        assertThrows(RuntimeException::class.java) {
             userService.updateById(invalidUser, savedUser.id!!)
         }
     }

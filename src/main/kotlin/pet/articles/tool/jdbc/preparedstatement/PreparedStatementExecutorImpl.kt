@@ -10,8 +10,10 @@ class PreparedStatementExecutorImpl(
 ) : PreparedStatementExecutor {
 
     override fun <T> execute(operation: PreparedStatementOperation<T>): T =
-        dataSource.connection.use {
-            it.prepareStatement(operation.sqlQuery, operation.param)
-                .use(operation.process)
-        }
+        runCatching {
+            dataSource.connection.use {
+                it.prepareStatement(operation.sqlQuery, operation.param)
+                    .use(operation.process)
+            }
+        }.getOrElse { throw RuntimeException(it) }
 }
